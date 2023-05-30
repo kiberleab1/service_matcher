@@ -2,28 +2,37 @@ const sequelize = require("../db/db")
 const Sequelize = require("sequelize");
 
 const User = sequelize.define('user', {
-    phoneNumber: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
+    last_visited_date: {
+        type: Sequelize.DATE,
+        allowNull: false
     },
-    firstName: {
+    access_token: {
         type: Sequelize.STRING,
         allowNull: false
     },
-    lastName: {
-        type: Sequelize.STRING
-    },
-    userType: {
+    is_expired: {
+        type: Sequelize.SMALLINT,
+        allowNull: false,
+        defaultValue: 0,
+    },    
+    has_pending_investigation: {
         type: Sequelize.SMALLINT,
         allowNull: false,
         defaultValue: 0,
     },
-    password: {
-        type: Sequelize.STRING,
-        allowNull: false
+    is_banned: {
+        type: Sequelize.SMALLINT,
+        allowNull: false,
+        defaultValue: 0,
+    },    
+    reset_password: {
+        type: Sequelize.JSONB,
+        allowNull: true,
+    },
+    level: {
+        type: Sequelize.JSONB,
+        allowNull: false,
     }
-
 });
 
 User.sync({ force: false })

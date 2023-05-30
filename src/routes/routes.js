@@ -8,5 +8,7 @@ const mainRoute = express.Router()
 mainRoute.get('/ping', pingController.ping)
 
 mainRoute.post("/registerUser", userController.registerUser)
+mainRoute.get("/login", userController.login)
+mainRoute.get("/passwordRecover", userController.passwordRecover)
 
 exports.mainRoute = mainRoute;
