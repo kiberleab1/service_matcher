@@ -1,8 +1,8 @@
 const express = require('express');
 
 const pingController = require("../controllers/ping.controller")
-const userController = require("../controllers/user.controller")
-const userProfileController = require("../controllers/UserProfile.controller")
+const userController = require("../controllers/User.controller")
+const userProfile = require("../controllers/UserProfile.controller")
 const categoryController = require("../controllers/category.controller")
 const { authMiddleware } = require("../middlewares/auth.middleware")
 
@@ -10,7 +10,10 @@ const mainRoute = express.Router()
 
 mainRoute.get('/ping', pingController.ping)
 
-mainRoute.post("/registerUser", userProfileController.registerUser)
+mainRoute.post("/registerUser", userProfile.registerUser)
+mainRoute.put('/updateProfile', userProfile.updateProfile);
+mainRoute.get('/getUserByCategory', userProfile.getUserByCategory);
+mainRoute.get('/getCurrentlyAvailabaleUsers', userProfile.getCurrentlyAvailabaleUsers);
 
 
 mainRoute.post("/login", userController.login)

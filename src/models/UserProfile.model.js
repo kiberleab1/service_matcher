@@ -24,7 +24,7 @@ const UserProfile = sequelize.define('userProfile', {
         allowNull: false
     },
     category: {
-        type: Sequelize.STRING,
+        type: Sequelize.JSONB,
         allowNull: false,
     },
     area_of_expertise: {
@@ -51,7 +51,10 @@ const UserProfile = sequelize.define('userProfile', {
         type: Sequelize.STRING,
         allowNull: true
     },
-
+    accunt_status: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
 });
 
 UserProfile.sync({ force: false })
