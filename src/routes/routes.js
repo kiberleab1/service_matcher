@@ -2,13 +2,16 @@ const express = require('express');
 
 const pingController = require("../controllers/ping.controller")
 const userController = require("../controllers/user.controller")
+const userProfile = require("../controllers/UserProfile.controller")
 const categoryController = require("../controllers/category.controller")
 
 const mainRoute = express.Router()
 
 mainRoute.get('/ping', pingController.ping)
 
-mainRoute.post("/registerUser", userController.registerUser)
+mainRoute.post("/registerUser", userProfile.registerUser)
+
+
 mainRoute.get("/login", userController.login)
 mainRoute.get("/passwordRecover", userController.passwordRecover)
 
