@@ -1,6 +1,6 @@
 const joi = require("joi");
 
-const model = require("../models/UserProfile.model")
+const model = require("../models/User.model")
 const { mustValidate } = require("../utils/validation");
 const { HTTP_CODES } = require("../utils/constants");
 const { hashPassword } = require("../utils/encrypt");
@@ -10,7 +10,7 @@ async function passwordRecover(req, res) {
 
     try {
         const { phoneNumber } = req.body;
-        const user = await model.Profile.findOne({ phoneNumber });
+        const user = await model.User.findOne({ phoneNumber });
         if (!user) {
             return res.status(HTTP_CODES.NOT_FOUND).json({ message: 'User not found' });
         }
@@ -27,7 +27,7 @@ async function login(req, res) {
 
     try {
         const { phoneNumber, password } = req.body;
-        const user = await model.Profile.findOne({ phoneNumber });
+        const user = await model.User.findOne({ phoneNumber });
         if (!user) {
             return res.status(HTTP_CODES.NOT_FOUND).json({ message: 'User not found' });
         }
