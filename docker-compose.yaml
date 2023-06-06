@@ -57,8 +57,10 @@ services:
       MINIO_ROOT_PASSWORD: "rootPassword"
     command: server --console-address ":9001" /data
   service-api-backend:
+    build: 
+        dockerfile: ./serverice_dockerfile/Dockerfile
+        context:  ./
     container_name: service_api_backend
-    image: 'node:18-alpine'
     working_dir: /home/node/app
     depends_on:
       - postgres

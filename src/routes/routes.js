@@ -1,7 +1,7 @@
 const express = require('express');
 
 const pingController = require("../controllers/ping.controller")
-const userController = require("../controllers/User.controller")
+const userController = require("../controllers/user.controller")
 const userProfile = require("../controllers/UserProfile.controller")
 const categoryController = require("../controllers/category.controller")
 const { authMiddleware } = require("../middlewares/auth.middleware")
