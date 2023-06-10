@@ -5,7 +5,7 @@ const { mustValidate } = require("../utils/validation");
 const { HTTP_CODES } = require("../utils/constants");
 const { hashPassword } = require("../utils/encrypt");
 const { sequelize, Sequelize, Op } = require('sequelize');
-
+const { changeTimeToAMPM } = require("../utils/date_util");
 async function registerUser(req, res) {
     console.log(req.body)
     try {
@@ -37,7 +37,8 @@ async function registerUser(req, res) {
                     availability: joi.array().items(
                         joi.object({
                             status: joi.string(),
-                            hour: joi.string(),
+                            start_hour: joi.number(),
+                            end_hour: joi.number(),
                             estimated_job_start_time: joi.string(),
                         })
                     ).required(),
@@ -212,25 +213,56 @@ async function getHigestRatedUsers(req, res) {
 async function getCurrentlyAvailabaleUsers(req, res) {
 
     try {
-        // const { current_time } = req.body.current_time;
+        const dateString = new Date().toISOString(); // Example date string
+        const date = new Date(dateString);
+        
+        // Get the hour component from the Date object
+        const hour = date.getHours();
+        
+        // Format the hour with AM/PM
+        const formattedHour = changeTimeToAMPM(hour);
 
-        // console.log(current_time)
-        const currentTime = new Date();
         const users = await model.UserProfile.findAndCountAll({
           where: {
             availability: {
-              [Op.contains]: [
-                {
-                  status: 'active',
-                  hour: {
-                    [Op.lte]: currentTime.getHours(),
-                  },
-                },
-              ],
-            },
-          },
+              [Sequelize.Op.contains]: [{ status: 'ACTIVE' }],
+              [Sequelize.Op.and]: [
+                Sequelize.literal(`EXTRACT(HOUR FROM CURRENT_TIMESTAMP) BETWEEN (SELECT (elem->>'start_hour')::integer FROM jsonb_array_elements("availability") AS elem WHERE elem ? 'start_hour')::integer AND (SELECT (elem->>'end_hour')::integer FROM jsonb_array_elements("availability") AS elem WHERE elem ? 'end_hour')::integer`)
+              ]
+            }
+          }
         });
-    
+        
+        res.status(HTTP_CODES.OK).json(users);
+    } catch (error) {
+        console.error(error);
+        if (error['detail']) {
+            res.status(HTTP_CODES.INTERAL_SERVER_ERROR).send(error['detail']);
+        }
+        else {
+            res.status(HTTP_CODES.BAD_REQUEST).send("Failed to fetch users by category");
+        }
+    }
+}
+
+
+async function filterUsers(req, res) {
+
+    try {
+
+        const users = await model.UserProfile.findAll({
+            where: {
+              firstName: 'aaaa', // Replace with the desired firstName value
+              lastName: 'wwwssw', // Replace with the desired lastName value
+              availability: {
+                [Sequelize.Op.contains]: [{ status: 'ACTIVE' }],
+                [Sequelize.Op.and]: [
+                  Sequelize.literal(`EXTRACT(HOUR FROM CURRENT_TIMESTAMP) BETWEEN (SELECT (elem->>'start_hour')::integer FROM jsonb_array_elements("availability") AS elem WHERE elem ? 'start_hour')::integer AND (SELECT (elem->>'end_hour')::integer FROM jsonb_array_elements("availability") AS elem WHERE elem ? 'end_hour')::integer`)
+                ]
+              }
+            }
+          });
+        
         res.status(HTTP_CODES.OK).json(users);
     } catch (error) {
         console.error(error);

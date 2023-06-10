@@ -3,6 +3,7 @@ const express = require('express');
 const pingController = require("../controllers/ping.controller")
 const userController = require("../controllers/user.controller")
 const userProfile = require("../controllers/UserProfile.controller")
+const userJobs = require("../controllers/userJobs.controller")
 const categoryController = require("../controllers/category.controller")
 const { authMiddleware } = require("../middlewares/auth.middleware")
 
@@ -15,6 +16,14 @@ mainRoute.put('/updateProfile', userProfile.updateProfile);
 mainRoute.get('/getUserByCategory', userProfile.getUserByCategory);
 mainRoute.get('/getCurrentlyAvailabaleUsers', userProfile.getCurrentlyAvailabaleUsers);
 
+mainRoute.post("/createNewUserJob", userJobs.createNewUserJob)
+mainRoute.put('/updateUserJOb', userJobs.updateUserJOb);
+mainRoute.get('/getUserJobLimitStatus', userJobs.getUserJobLimitStatus);
+mainRoute.get('/getUserJobSuccessRate', userJobs.getUserJobSuccessRate);
+mainRoute.get('/getUserActiveJobs', userJobs.getUserActiveJobs);
+mainRoute.get('/getUserCompletedJobs', userJobs.getUserCompletedJobs);
+mainRoute.get('/getHighestRatedUsers', userJobs.getHighestRatedUsers);
+mainRoute.get('/getUserReviews', userJobs.getUserReviews);
 
 mainRoute.post("/login", userController.login)
 mainRoute.get("/passwordRecover", userController.passwordRecover)
