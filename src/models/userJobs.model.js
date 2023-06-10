@@ -3,7 +3,7 @@ const Sequelize = require("sequelize");
 
 const UserJobs = sequelize.define('userJobs', {
     user_id: {
-        type: Sequelize.DATE,
+        type: Sequelize.SMALLINT,
         allowNull: false
     },
     is_limit_reached: {
