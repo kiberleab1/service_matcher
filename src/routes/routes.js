@@ -41,5 +41,4 @@ mainRoute.get("/deleteCategoryById", categoryController.deleteCategoryById)
 mainRoute.get("/getCategoryById", categoryController.getCategoryById)
 mainRoute.get("/getCategories", categoryController.getCategories)
 
-
 exports.mainRoute = mainRoute;
