@@ -1,0 +1,8 @@
+{
+    "Services": {
+        "ServiceTypes": {
+            "LocationBased": 1,
+            "PopularityBased": 2
+        }
+    }
+}

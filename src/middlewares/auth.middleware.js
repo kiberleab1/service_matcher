@@ -6,7 +6,6 @@ const userSessions = require("../models/userSessions.model")
 async function authMiddleware(req, res, next) {
     const token = req.headers.authorization;
     // TODO for development only 
-    console.log(token)
     if (token == "dev") {
         next()
         return;

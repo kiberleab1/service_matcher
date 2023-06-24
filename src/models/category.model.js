@@ -14,6 +14,10 @@ const Category = sequelize.define('Category', {
         type: Sequelize.STRING,
         allowNull: true
     },
+    serviceType: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    }
 
 
 });

@@ -7,6 +7,7 @@ const userJobs = require("../controllers/userJobs.controller")
 const userMessages = require("../controllers/message.controller")
 const categoryController = require("../controllers/category.controller")
 const { authMiddleware } = require("../middlewares/auth.middleware")
+const { uploadFile } = require("../services/uploadFile.services")
 
 const mainRoute = express.Router()
 
@@ -34,10 +35,11 @@ mainRoute.get('/getChats', userMessages.getChats);
 mainRoute.post("/login", userController.login)
 mainRoute.get("/passwordRecover", userController.passwordRecover)
 
-mainRoute.post("/createCategory", authMiddleware, categoryController.createCategory)
+mainRoute.post("/createCategory", authMiddleware, uploadFile().single('image'), categoryController.createCategory)
 mainRoute.post("/updateCategory", categoryController.updateCategory)
 mainRoute.get("/deleteCategoryById", categoryController.deleteCategoryById)
 mainRoute.get("/getCategoryById", categoryController.getCategoryById)
 mainRoute.get("/getCategories", categoryController.getCategories)
+
 
 exports.mainRoute = mainRoute;

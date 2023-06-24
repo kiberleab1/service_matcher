@@ -1,9 +1,14 @@
 const joi = require("joi");
+const config = require("config")
 
 const categoryModel = require("../models/category.model")
 const { mustValidate } = require("../utils/validation");
 const { HTTP_CODES } = require("../utils/constants");
+const { objectGetKeyByValue } = require("../utils/helpers");
+const ErrorWithDetail = require("../utils/ErrorWithDetail");
 
+
+const SERVICE_TYPES = config.get("Services.ServiceTypes")
 
 async function createCategory(req, res) {
 
@@ -13,16 +18,24 @@ async function createCategory(req, res) {
                 .object({
                     name: joi.string().required(),
                     description: joi.string().allow('').optional(),
-                    imageLink: joi.string().uri().optional(),
+                    serviceType: joi.number().integer().required()
                 }).unknown(true)
                 .required();
-
-        const { name, description, imageLink } = mustValidate(
+        const { name, description, serviceType } = mustValidate(
             validateSchema(), req.body);
+
+        const imageLink = req?.file?.location ? req.file.location : "";
+        console.log(SERVICE_TYPES)
+        console.log(objectGetKeyByValue(SERVICE_TYPES, serviceType))
+        if (!objectGetKeyByValue(SERVICE_TYPES, serviceType)) {
+            throw new ErrorWithDetail("Unsupported Service Type")
+        }
+
 
         const newCategory = await categoryModel.Category.create({
             name,
             description,
+            serviceType,
             imageLink,
         });
 
